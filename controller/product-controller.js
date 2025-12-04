@@ -3,6 +3,7 @@ const Product = require("../model/product-model")
 const addNewProduct = async (req, res, next) => {
     const newProduct = req.body
 
+ 
 
 
     try {

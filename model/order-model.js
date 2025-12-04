@@ -40,7 +40,7 @@ const orderSchema = new mongoose.Schema({
         default: 'pending',
         required: true
     },
-    // placeBy: { tpe: mongoose.Types.ObjectId, ref: "User" }
+    orderPlacedBy: { type: mongoose.Types.ObjectId, ref: "User" }
 
 
 }, { timestamps: true })

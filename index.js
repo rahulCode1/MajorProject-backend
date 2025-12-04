@@ -9,6 +9,9 @@ const productRoute = require("./routes/product-routes")
 const categoryRoute = require("./routes/category-routes")
 const addressRoute = require("./routes/address-routes")
 const orderRouter = require("./routes/order-routes")
+const userRouter = require("./routes/user-routes")
+const cartRouter = require("./routes/cart-routes")
+const wishlistRouter = require("./routes/wishlist-routes")
 
 initializeDb()
 const corsOptions = {
@@ -18,8 +21,14 @@ const corsOptions = {
 
 }
 
+
+
 app.use(cors(corsOptions))
 app.use(express.json())
+
+app.use("/api/user", userRouter)
+app.use("/api/cart", cartRouter)
+app.use("/api/wishlist", wishlistRouter)
 app.use("/api", productRoute)
 app.use("/api", categoryRoute)
 app.use("/api/address", addressRoute)

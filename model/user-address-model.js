@@ -38,17 +38,17 @@ const addressSchema = new mongoose.Schema(
       trim: true,
     },
 
-    // optional: mark default address
+   
     isDefault: {
       type: Boolean,
       default: false,
     },
 
-    // optional: link to user
-    // userId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "User",
-    // },
+    
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true }
 );

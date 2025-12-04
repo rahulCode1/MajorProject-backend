@@ -36,7 +36,7 @@ const productModel = new mongoose.Schema(
         metaTitle: { type: String, required: true, maxlength: 60 },
         metaDescription: { type: String, required: true, maxlength: 160 },
         keywords: { type: String, required: true },
-        // createdBy: {type: mongoose.Types.ObjectId, ref: "User"}
+        createdBy: {type: mongoose.Types.ObjectId, ref: "User"}
 
     },
     {
