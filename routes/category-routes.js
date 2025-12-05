@@ -12,7 +12,7 @@ body("description").trim().notEmpty().withMessage("Please provide description.")
 
 router.post("/category", categoryValidation, handleValidationErrors, addCategory)
 router.get("/categories", getAllCategories)
-router.get("/category/productCategory", productsViaCategory)
+router.get("/category/product_category", productsViaCategory)
 router.get("/category/:id", categoryById)
 
 

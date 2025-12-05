@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose")
 const WishList = require("../model/wishlist-model")
+const Cart = require("../model/cart-model")
 
 
 const addOrRemoveFromWishlist = async (req, res, next) => {
@@ -48,7 +49,7 @@ const getAllWishlistItems = async (req, res, next) => {
         const wishlist = await WishList.findOne({ userId: new mongoose.Types.ObjectId(userId) })
             .populate("items.productId");
 
-    
+
 
         res.status(200).json({ success: true, message: "Wishlist fetched successfully.", wishlist })
 
@@ -85,4 +86,53 @@ const removeFromWishlist = async (req, res, next) => {
     }
 }
 
-module.exports = { addOrRemoveFromWishlist, getAllWishlistItems }
+const moveToCart = async (req, res, next) => {
+    const userId = req.params.id
+    const { productId } = req.body
+
+    try {
+
+        let wishlist = await WishList.findOne({ userId: new mongoose.Types.ObjectId(userId) })
+
+        if (!wishlist) {
+            return res.status(400).json({ message: "Wishlist not found for that user." })
+        }
+
+        const existingWishlistItem = wishlist.items.find(product => product.productId.toString() === productId)
+
+        if (!existingWishlistItem) {
+            return res.status(400).json({ message: "Product not found on wishlist." })
+        }
+
+        let cart = await Cart.findOne({ userId: new mongoose.Types.ObjectId(userId) })
+
+        if (!cart) {
+            cart = await Cart.create({ userId, items: [] })
+        }
+
+        const existingItemInCart = cart.items.find(product => product.productId.toString() === productId)
+
+        if (existingItemInCart) {
+            existingItemInCart.quantity += 1
+        } else {
+
+
+            cart.items.push({ productId, quantity: 1 })
+        }
+
+        await cart.save()
+
+        wishlist.items = wishlist.items.filter(product => product.productId.toString() !== productId)
+
+        await wishlist.save()
+
+        const updatedWishlist = await WishList.findOne({ userId }).populate("items.productId")
+
+        res.status(200).json({ success: true, message: "Product successfully moved to cart.", wishlist: updatedWishlist })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+module.exports = { addOrRemoveFromWishlist, getAllWishlistItems , moveToCart}

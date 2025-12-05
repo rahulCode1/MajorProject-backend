@@ -41,8 +41,10 @@ app.use((req, res) => {
 
 
 app.use((error, req, res, next) => {
-    console.log(error.stack)
-    res.status(400).json({ message: "Something went wrong." })
+    if (req.headerSent) {
+        return next(error)
+    }
+    res.status(error.code || 500).json({ message: error.message || "Something went wrong." })
 })
 
 app.use(errorHandler)

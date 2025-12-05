@@ -75,6 +75,8 @@ const productDetails = async (req, res, next) => {
 
         const productDetails = await Product.findById(productId)
 
+        console.log(productDetails)
+
         if (productDetails) {
             res.status(200).json({ success: true, message: " Product details fetched successfully.", data: { product: productDetails } })
         } else {

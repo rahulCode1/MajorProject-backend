@@ -92,7 +92,7 @@ const deleteOrder = async (req, res, next) => {
         if (deletedOrder) {
             res.status(200).json({
                 success: true,
-                message: "Order deleted successfully."
+                message: "Order canceled successfully."
             });
         } else {
             res.status(404).json({
@@ -109,5 +109,6 @@ module.exports = {
     createOrder,
     getAllOrders,
     getOrderDetails,
+    deleteOrder
 
 };
