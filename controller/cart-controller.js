@@ -151,7 +151,7 @@ const removeFromCart = async (req, res, next) => {
     const { productId } = req.body
 
 
-    
+
 
     try {
 
@@ -163,11 +163,11 @@ const removeFromCart = async (req, res, next) => {
 
 
 
-       
+
 
         const existingItem = cart.items.find(product => product.productId.toString() === productId)
 
-       
+
 
         if (!existingItem) {
             return res.status(404).json({ message: "Product not found in cart" });
