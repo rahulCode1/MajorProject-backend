@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 
 
 const orderSchema = new mongoose.Schema({
+
     products: [{
         name: { type: String, required: true },
         discountPrice: { type: Number, required: true },
@@ -33,6 +34,7 @@ const orderSchema = new mongoose.Schema({
         default: 'pending',
         required: true
     },
+    paymentMethod: { type: String, required: true },
 
     orderStatus: {
         type: String,

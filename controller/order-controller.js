@@ -2,6 +2,9 @@ const Order = require('../model/order-model')
 const createOrder = async (req, res, next) => {
     const orderData = req.body;
 
+  
+ 
+
     try {
         const order = new Order(orderData);
         const savedOrder = await order.save();
@@ -78,6 +81,8 @@ const getOrderDetails = async (req, res, next) => {
 // Delete Order (Admin only - optional)
 const deleteOrder = async (req, res, next) => {
     const orderId = req.params.id;
+
+    
 
     if (!orderId) {
         return res.status(400).json({
