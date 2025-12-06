@@ -1,12 +1,14 @@
+const { default: mongoose } = require('mongoose');
 const Order = require('../model/order-model')
 const createOrder = async (req, res, next) => {
+    const userId = req.params.id
     const orderData = req.body;
 
-  
- 
+
+
 
     try {
-        const order = new Order(orderData);
+        const order = await Order.create({ ...orderData, orderPlacedBy: userId });
         const savedOrder = await order.save();
 
         res.status(201).json({
@@ -19,70 +21,27 @@ const createOrder = async (req, res, next) => {
     }
 };
 
-// Get All Orders
-const getAllOrders = async (req, res, next) => {
-    try {
-        const orderList = await Order.find().sort({ createdAt: -1 }); // Latest first
 
-        if (orderList.length !== 0) {
-            res.status(200).json({
-                success: true,
-                message: "All orders fetched successfully.",
-                data: { orders: orderList },
-            });
-        } else {
-            res.status(200).json({
-                success: true,
-                message: "No orders found.",
-                data: { orders: orderList },
-            });
-        }
-    } catch (error) {
-        next(error);
-    }
-};
 
-// Get Order Details by ID
-const getOrderDetails = async (req, res, next) => {
-    const orderId = req.params.id;
 
-    if (!orderId) {
-        return res.status(400).json({
-            success: false,
-            message: "Please provide order id."
-        });
-    }
+
+const findUserOrders = async (req, res, next) => {
+    const userId = req.params.id
 
     try {
-        const orderDetails = await Order.findById(orderId);
 
-        if (orderDetails) {
-            res.status(200).json({
-                success: true,
-                message: "Order details fetched successfully.",
-                data: { order: orderDetails }
-            });
-        } else {
-            res.status(404).json({
-                success: false,
-                message: "Order not found."
-            });
-        }
+        const orders = await Order.find({ orderPlacedBy: new mongoose.Types.ObjectId(userId) }).sort({ createdAt: -1 })
+
+        res.status(200).json({ message: "Orders find successfully.", data: { orders } })
     } catch (error) {
-        next(error);
+        next(error)
     }
-};
+}
 
-
-
-
-
-
-// Delete Order (Admin only - optional)
 const deleteOrder = async (req, res, next) => {
     const orderId = req.params.id;
 
-    
+
 
     if (!orderId) {
         return res.status(400).json({
@@ -112,8 +71,8 @@ const deleteOrder = async (req, res, next) => {
 
 module.exports = {
     createOrder,
-    getAllOrders,
-    getOrderDetails,
-    deleteOrder
+
+    deleteOrder,
+    findUserOrders
 
 };
