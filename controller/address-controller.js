@@ -22,11 +22,16 @@ const getAllAddress = async (req, res, next) => {
         const addressList = await Address.find();
 
         if (addressList.length !== 0) {
-            res.status(200).json({
-                success: true,
-                message: "All addresses fetched successfully.",
-                data: { address: addressList },
-            });
+
+          
+
+
+                res.status(200).json({
+                    success: true,
+                    message: "All addresses fetched successfully.",
+                    data: { address: addressList },
+                });
+          
         } else {
             res.status(200).json({
                 message: "No address found.",
@@ -110,7 +115,7 @@ const addressDetails = async (req, res, next) => {
 const updateIsDefault = async (req, res, next) => {
     const addressId = req.params.id
 
-   
+
 
     try {
 

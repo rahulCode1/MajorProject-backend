@@ -190,10 +190,15 @@ const moveToWishlist = async (req, res, next) => {
     const userId = req.params.id
     const { productId } = req.body
 
+
+
     try {
 
         const cart = await Cart.findOne({ userId: new mongoose.Types.ObjectId(userId) })
 
+
+
+      
 
         if (!cart) {
             return res.status(400).json({ message: "Cart not found for that user." })
@@ -201,21 +206,22 @@ const moveToWishlist = async (req, res, next) => {
 
         const existingCartItem = cart.items.find(product => product.productId.toString() === productId)
 
-
+        
         if (!existingCartItem) {
             return res.status(400).json({ message: "Product not found on cart." })
         }
-
-
+        
+        
         let wishlist = await Wishlist.findOne({ userId: new mongoose.Types.ObjectId(userId) })
-
-
+        
+        
         if (!wishlist) {
             wishlist = await Wishlist.create({ userId, items: [] })
         }
-
+        
         const existingWishlistItem = wishlist.items.find(product => product.productId.toString() === productId)
-
+        
+       
 
         if (existingWishlistItem) {
             return res.status(400).json({ message: "Product already exist on wishlist." })
@@ -223,11 +229,15 @@ const moveToWishlist = async (req, res, next) => {
 
         wishlist.items.push({ productId })
 
-        await wishlist.save()
+      await wishlist.save()
+
+    
 
         cart.items = cart.items.filter(product => product.productId.toString() !== productId)
 
         await cart.save()
+
+        
 
         const updatedCart = await Cart.findOne({ userId }).populate("items.productId")
 

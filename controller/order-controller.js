@@ -32,7 +32,12 @@ const findUserOrders = async (req, res, next) => {
 
         const orders = await Order.find({ orderPlacedBy: new mongoose.Types.ObjectId(userId) }).sort({ createdAt: -1 })
 
-        res.status(200).json({ message: "Orders find successfully.", data: { orders } })
+
+   
+
+
+            res.status(200).json({ message: "Orders find successfully.", data: { orders } })
+      
     } catch (error) {
         next(error)
     }

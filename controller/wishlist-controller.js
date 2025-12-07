@@ -51,7 +51,9 @@ const getAllWishlistItems = async (req, res, next) => {
 
 
 
+
         res.status(200).json({ success: true, message: "Wishlist fetched successfully.", wishlist })
+
 
     } catch (error) {
         next(error)
@@ -135,4 +137,4 @@ const moveToCart = async (req, res, next) => {
     }
 }
 
-module.exports = { addOrRemoveFromWishlist, getAllWishlistItems , moveToCart}
+module.exports = { addOrRemoveFromWishlist, getAllWishlistItems, moveToCart }

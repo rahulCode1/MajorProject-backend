@@ -3,7 +3,7 @@ const Product = require("../model/product-model")
 const addNewProduct = async (req, res, next) => {
     const newProduct = req.body
 
- 
+
 
 
     try {
@@ -36,7 +36,12 @@ const getAllProducts = async (req, res, next) => {
         const productsList = await Product.find(filter)
 
         if (productsList.length !== 0) {
-            res.status(200).json({ success: true, message: "All product fetched successfully.", data: { products: productsList } })
+
+       
+
+
+                res.status(200).json({ success: true, message: "All product fetched successfully.", data: { products: productsList } })
+        
         } else {
             res.status(200).json({ message: "No product found.", data: { products: productsList } })
         }
@@ -75,10 +80,14 @@ const productDetails = async (req, res, next) => {
 
         const productDetails = await Product.findById(productId)
 
-        console.log(productDetails)
+
+
+        const similarProducts = await Product.find({ category: productDetails.category, _id: { $ne: productDetails._id } }).limit(8)
+
+
 
         if (productDetails) {
-            res.status(200).json({ success: true, message: " Product details fetched successfully.", data: { product: productDetails } })
+            res.status(200).json({ success: true, message: " Product details fetched successfully.", data: { product: productDetails, similarProducts } })
         } else {
             res.status(400).json({ message: "No product found." })
         }
