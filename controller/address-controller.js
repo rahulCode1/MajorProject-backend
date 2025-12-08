@@ -1,4 +1,5 @@
 const Address = require("../model/user-address-model")
+const HttpError = require("../model/http-error")
 
 // Add New Address
 const addNewAddress = async (req, res, next) => {
@@ -23,20 +24,18 @@ const getAllAddress = async (req, res, next) => {
 
         if (addressList.length !== 0) {
 
-          
 
 
-                res.status(200).json({
-                    success: true,
-                    message: "All addresses fetched successfully.",
-                    data: { address: addressList },
-                });
-          
-        } else {
+
             res.status(200).json({
-                message: "No address found.",
+                success: true,
+                message: "All addresses fetched successfully.",
                 data: { address: addressList },
             });
+
+        } else {
+
+            throw new HttpError("No address found.", 404)
         }
     } catch (error) {
         next(error);
