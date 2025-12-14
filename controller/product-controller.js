@@ -63,6 +63,7 @@ const deleteProduct = async (req, res, next) => {
 const productDetails = async (req, res, next) => {
     const productId = req.params.id
 
+
     if (!productId) {
         return next(new HttpError("Please provide product id.", 404))
     }
@@ -70,8 +71,9 @@ const productDetails = async (req, res, next) => {
 
         const productDetails = await Product.findById(productId)
         const similarProducts = await Product.find({ category: productDetails.category, _id: { $ne: productDetails._id } }).limit(5)
+
         if (productDetails) {
-            res.status(200).json({ success: true, message: " Product details fetched successfully.", data: { product: productDetails.toObject({ getters: true }), similarProducts: similarProducts.toObject({ getters: true }) } })
+            res.status(200).json({ success: true, message: " Product details fetched successfully.", data: { product: productDetails.toObject({ getters: true }), similarProducts: similarProducts.map(product => product.toObject({ getters: true })) } })
         } else {
             return next(new HttpError("No product found.", 404))
         }
