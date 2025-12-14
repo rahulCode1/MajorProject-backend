@@ -15,7 +15,8 @@ const userSchema = new mongoose.Schema({
         trim: true,
 
     },
-    orders: [{ type: mongoose.Types.ObjectId, ref: "Order" }]
+    orders: [{ type: mongoose.Types.ObjectId, ref: "Order" }],
+    address: [{type: mongoose.Types.ObjectId, ref: "Address"}],
 }, {
     timestamps: true
 });

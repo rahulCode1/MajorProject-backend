@@ -1,12 +1,15 @@
 // controllers/userController.js
 const User = require('../model/user-model');
+const HttpError = require("../model/http-error")
 
 // Create user
 const createUser = async (req, res, next) => {
-    const newUser = req.body;
+    const { name, phoneNumber } = req.body;
+
+
 
     try {
-        const user = new User(newUser);
+        const user = new User({ name, phoneNumber, address: [], orders: [] });
         const savedUser = await user.save();
 
         res.status(200).json({
@@ -27,13 +30,10 @@ const getAllUsers = async (req, res, next) => {
             res.status(200).json({
                 success: true,
                 message: "All users fetched successfully.",
-                data: { users: userList },
+                data: { users: userList.map(user => user.toObject({ getters: true })) },
             });
         } else {
-            res.status(200).json({
-                message: "No users found.",
-                data: { users: userList },
-            });
+            return next(new HttpError("No product found.", 404))
         }
     } catch (error) {
         next(error);

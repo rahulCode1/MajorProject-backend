@@ -1,15 +1,20 @@
 const { default: mongoose } = require('mongoose');
 const Order = require('../model/order-model')
+const HttpError = require("../model/http-error")
+
+
+
 const createOrder = async (req, res, next) => {
     const userId = req.params.id
+    if (!userId) {
+        return next(new HttpError("Please provide user id for place order.", 404))
+    }
     const orderData = req.body;
-
-
-
-
     try {
         const order = await Order.create({ ...orderData, orderPlacedBy: userId });
         const savedOrder = await order.save();
+
+       
 
         res.status(201).json({
             success: true,
@@ -27,17 +32,15 @@ const createOrder = async (req, res, next) => {
 
 const findUserOrders = async (req, res, next) => {
     const userId = req.params.id
-
+    if (!userId) {
+        return next(new HttpError("Please provide user id for find user order.", 404))
+    }
     try {
-
         const orders = await Order.find({ orderPlacedBy: new mongoose.Types.ObjectId(userId) }).sort({ createdAt: -1 })
 
-
    
+        res.status(200).json({ message: "Orders find successfully.", data: {orders: orders.map(order=> order.toObject({getters: true})) } })
 
-
-            res.status(200).json({ message: "Orders find successfully.", data: { orders } })
-      
     } catch (error) {
         next(error)
     }
@@ -45,16 +48,9 @@ const findUserOrders = async (req, res, next) => {
 
 const deleteOrder = async (req, res, next) => {
     const orderId = req.params.id;
-
-
-
     if (!orderId) {
-        return res.status(400).json({
-            success: false,
-            message: "Please provide order id."
-        });
+        return next(new HttpError("Please provide order id for place order.", 404))
     }
-
     try {
         const deletedOrder = await Order.findByIdAndDelete(orderId);
 
@@ -64,10 +60,7 @@ const deleteOrder = async (req, res, next) => {
                 message: "Order canceled successfully."
             });
         } else {
-            res.status(404).json({
-                success: false,
-                message: "Order not found."
-            });
+            return next(new HttpError("Order not found.", 404))
         }
     } catch (error) {
         next(error);

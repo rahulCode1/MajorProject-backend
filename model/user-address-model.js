@@ -38,15 +38,15 @@ const addressSchema = new mongoose.Schema(
       trim: true,
     },
 
-   
+
     isDefault: {
       type: Boolean,
       default: false,
     },
 
-    
+
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId, required: true,
       ref: "User",
     },
   },
