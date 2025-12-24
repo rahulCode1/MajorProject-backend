@@ -7,7 +7,7 @@ const initializeDb = async () => {
 
     await mongoose.connect(uri).then(() => {
         console.log(`Successfully connected to db.`)
-    }).catch(() => {
+    }).catch((error) => {
         console.log(error)
     })
 }

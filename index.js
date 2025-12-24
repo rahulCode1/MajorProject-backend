@@ -12,12 +12,12 @@ const cartRouter = require("./routes/cart-routes")
 const wishlistRouter = require("./routes/wishlist-routes")
 const HttpError = require("./model/http-error")
 
+
 initializeDb()
 const corsOptions = {
     origin: "*",
     credentials: true,
     optionsSuccessStatus: 200
-
 }
 
 

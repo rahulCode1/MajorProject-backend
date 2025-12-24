@@ -5,22 +5,11 @@ const mongoose = require("mongoose")
 const orderSchema = new mongoose.Schema({
 
     products: [{
-        name: { type: String, required: true },
-        discountPrice: { type: Number, required: true },
-        image: { type: String, required: true },
-        height: { type: Number, required: true },
-        quantity: { type: Number, required: true },
-        materialType: { type: String, required: true },
-
+        productId: { type: mongoose.Types.ObjectId, ref: "Product", required: true },
+        quantity: { type: Number, required: true, min: 1 }
     }],
     address: {
-        name: { type: String, required: true },
-        phoneNumber: { type: String, required: true },
-        zipCode: { type: Number, required: true },
-        area: { type: String, required: true },
-        city: { type: String, required: true },
-        fullAddress: { type: String, required: true },
-        state: { type: String, required: true }
+        type: mongoose.Types.ObjectId, ref: "Address", required: true
     },
     summary: {
 
@@ -42,7 +31,7 @@ const orderSchema = new mongoose.Schema({
         default: 'pending',
         required: true
     },
-    orderPlacedBy: { type: mongoose.Types.ObjectId, ref: "User" }
+    orderPlacedBy: { type: mongoose.Types.ObjectId, ref: "User", required: true }
 
 
 }, { timestamps: true })

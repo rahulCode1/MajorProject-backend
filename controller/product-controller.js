@@ -1,10 +1,79 @@
 const Product = require("../model/product-model")
 const HttpError = require("../model/http-error")
+const cloudinary = require("../config/cloudinary")
 
 const addNewProduct = async (req, res, next) => {
-    const newProduct = req.body
+    const { name,
+        shortDescription,
+        description,
+        price,
+        discountPrice,
+        costPrice,
+        length,
+        width,
+        height,
+        weight,
+        rating,
+        materialType,
+        category,
+        care,
+        tags,
+        metaTitle,
+        metaDescription,
+        keywords } = req.body
+
+
+
+
+    if (!req.files || req.files.length === 0) {
+        return next(new HttpError("No image uploaded.", 400))
+
+    }
+
+    const uploadedImages = []
+
+
+
+
     try {
-        const product = new Product(newProduct)
+
+
+        for (file of req.files) {
+            const result = await cloudinary.uploader.upload(
+                `data:${file.mimetype};base64,${file.buffer.toString("base64")}`,
+             
+            )
+
+            uploadedImages.push({
+                url: result.secure_url,
+                public_id: result.public_id
+            })
+        }
+
+        const product = new Product({
+            name,
+            shortDescription,
+            description,
+            price,
+            discountPrice,
+            costPrice,
+            length,
+            width,
+            height,
+            weight,
+            rating,
+            materialType,
+            category,
+            care,
+            tags,
+            images: uploadedImages,
+            metaTitle,
+            metaDescription,
+            keywords
+        })
+
+
+
         const saveProduct = await product.save()
 
         if (saveProduct) {

@@ -1,6 +1,8 @@
 const express = require("express")
 const { body, check } = require("express-validator")
 const router = express.Router()
+const upload = require("../config/multer")
+
 const { addNewProduct, getAllProducts, productDetails, deleteProduct } = require("../controller/product-controller")
 
 
@@ -93,7 +95,7 @@ const productValidation = [
 
 
 
-router.post("/product/add", productValidation,  addNewProduct)
+router.post("/product/add", upload.array("images", 10), productValidation, addNewProduct)
 router.get("/products", getAllProducts)
 
 router.get("/product/:id", productDetails)

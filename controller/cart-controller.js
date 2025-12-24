@@ -196,25 +196,6 @@ const moveToWishlist = async (req, res, next) => {
 
 }
 
-const clearCart = async (req, res, next) => {
-    const userId = req.params.id
-    if (!userId) {
-        return next(new HttpError("Please provide user id for clear cart.", 404))
-    }
-    try {
-        const cart = await Cart.findOne({ userId: new mongoose.Types.ObjectId(userId) })
-        if (!cart) {
-            return next(new HttpError("User doesn't have cart.", 404))
-        }
-        if (cart.items.length !== 0) {
-            cart.items = []
-            await cart.save()
-        }
-        res.status(200).json({ message: "All items removed from cart successfully.", cart })
-    } catch (error) {
-        next(error)
-    }
-}
 
-
-module.exports = { addProductToCart, getAllCartItems, increaseQuantity, decreaseQuantity, moveToWishlist, removeFromCart, clearCart }
+module.exports = { addProductToCart, getAllCartItems, increaseQuantity,
+     decreaseQuantity, moveToWishlist, removeFromCart }

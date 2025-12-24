@@ -6,7 +6,7 @@ const productModel = new mongoose.Schema(
         shortDescription: { type: String, required: true, trim: true },
         description: { type: String, required: true },
         price: { type: Number, required: true, min: 0 },
-        rating: { type: Number, required: true, min: 0 , max: 5},
+        rating: { type: Number, required: true, min: 0, max: 5 },
         discountPrice: { type: Number, required: true, min: 0 },
         costPrice: { type: Number, required: true, min: 0 },
 
@@ -31,13 +31,16 @@ const productModel = new mongoose.Schema(
         tags: { type: [String], required: true },
 
         // Images - changed to array for multiple images
-        image: { type: String, required: true }, // Keep as single for now if that's your requirement
+        images: [{
+            url: { type: String, required: true },
+            public_id: { type: String, required: true }
+        }],
 
         // SEO
         metaTitle: { type: String, required: true, maxlength: 60 },
         metaDescription: { type: String, required: true, maxlength: 160 },
         keywords: { type: String, required: true },
-        createdBy: {type: mongoose.Types.ObjectId, ref: "User"}
+        createdBy: { type: mongoose.Types.ObjectId, ref: "User" }
 
     },
     {
