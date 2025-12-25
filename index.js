@@ -14,13 +14,9 @@ const HttpError = require("./model/http-error")
 
 
 initializeDb()
-const corsOptions = {
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type"]
-};
 
-app.use(cors(corsOptions));
+
+app.use(cors());
 
 app.use(express.json())
 
