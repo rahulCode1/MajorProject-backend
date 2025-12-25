@@ -96,6 +96,8 @@ const productValidation = [
 
 
 router.post("/product/add", upload.array("images", 10), productValidation, addNewProduct)
+
+
 router.get("/products", getAllProducts)
 
 router.get("/product/:id", productDetails)

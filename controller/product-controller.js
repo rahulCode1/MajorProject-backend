@@ -25,6 +25,7 @@ const addNewProduct = async (req, res, next) => {
 
 
 
+
     if (!req.files || req.files.length === 0) {
         return next(new HttpError("No image uploaded.", 400))
 
@@ -41,14 +42,26 @@ const addNewProduct = async (req, res, next) => {
         for (file of req.files) {
             const result = await cloudinary.uploader.upload(
                 `data:${file.mimetype};base64,${file.buffer.toString("base64")}`,
-             
-            )
+                {
+                    folder: "products", // Add folder
+                    resource_type: "auto" // Add resource type
+                }
+            );
 
             uploadedImages.push({
                 url: result.secure_url,
                 public_id: result.public_id
             })
         }
+
+        // In your controller, before creating the product:
+        const careArray = Array.isArray(req.body.care)
+            ? req.body.care
+            : req.body.care ? [req.body.care] : [];
+
+        const tagsArray = Array.isArray(req.body.tags)
+            ? req.body.tags
+            : req.body.tags ? [req.body.tags] : [];
 
         const product = new Product({
             name,
@@ -64,8 +77,8 @@ const addNewProduct = async (req, res, next) => {
             rating,
             materialType,
             category,
-            care,
-            tags,
+            care: careArray,
+            tags: tagsArray,
             images: uploadedImages,
             metaTitle,
             metaDescription,
