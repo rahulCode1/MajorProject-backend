@@ -112,7 +112,13 @@ const getAllProducts = async (req, res, next) => {
 
 
         if (productsList.length !== 0) {
-            res.status(200).json({ success: true, message: "All product fetched successfully.", data: { products: productsList.map(product => product.toObject({ getters: true })) } })
+            res.status(200).json({
+                success: true,
+                message: "All product fetched successfully.",
+                data: {
+                    products: productsList.map(product => product.toObject({ getters: true }))
+                }
+            })
 
         } else {
             return next(new HttpError("No product found.", 404))

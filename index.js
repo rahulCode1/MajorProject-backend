@@ -16,6 +16,13 @@ const HttpError = require("./model/http-error")
 initializeDb()
 
 
+  console.log('Cloudinary Config Check:');
+    console.log('CLOUD_NAME:', process.env.CLOUD_NAME);
+    console.log('CLOUD_API_KEY:', process.env.CLOUD_API_KEY ? 'EXISTS' : 'MISSING');
+    console.log('CLOUD_API_SECRET:', process.env.CLOUD_API_SECRET ? 'EXISTS' : 'MISSING');
+    
+  
+
 app.use(cors());
 
 app.use(express.json())

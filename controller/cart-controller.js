@@ -82,15 +82,14 @@ const increaseQuantity = async (req, res, next) => {
         }
         existingItem.quantity += 1;
         await cart.save();
-        // Populate after saving
-        const updatedCart = await Cart.findOne({ userId: new mongoose.Types.ObjectId(userId) })
-            .populate("items.productId");
+
+
 
 
         res.status(200).json({
             success: true,
             message: "Quantity increased successfully.",
-            cart: updatedCart.items.map(cart => cart.toObject({ getters: true }))
+            cart: existingItem.toObject({ getters: true })
         });
 
     } catch (error) {
@@ -123,9 +122,12 @@ const decreaseQuantity = async (req, res, next) => {
             existingItem.quantity -= 1
         }
         await cart.save()
-        const updatedCart = await Cart.findOne({ userId: new mongoose.Types.ObjectId(userId) })
-            .populate("items.productId");
-        res.status(200).json({ success: true, message: "Quantity decrease successfully.", cart: updatedCart.items.map(cart => cart.toObject({ getters: true })) })
+
+        res.status(200).json({
+            success: true,
+            message: "Quantity decrease successfully.",
+            cart: existingItem.toObject({ getters: true })
+        })
     } catch (error) { next(error) }
 }
 
@@ -151,8 +153,12 @@ const removeFromCart = async (req, res, next) => {
         }
         cart.items = cart.items.filter(product => product.productId.toString() !== productId)
         await cart.save()
-        const updatedCart = await Cart.findOne({ userId: new mongoose.Types.ObjectId(userId) }).populate("items.productId")
-        res.status(200).json({ success: true, message: "Product successfully removed from cart.", cart: updatedCart.items.map(cart => cart.toObject({ getters: true })) })
+
+        res.status(200).json({
+            success: true,
+            message: "Product successfully removed from cart.",
+            cart: existingItem.toObject({ getters: true })
+        })
     } catch (error) {
         next(error)
     }
@@ -187,9 +193,12 @@ const moveToWishlist = async (req, res, next) => {
         await wishlist.save()
         cart.items = cart.items.filter(product => product.productId.toString() !== productId)
         await cart.save()
-        const updatedCart = await Cart.findOne({ userId }).populate("items.productId")
 
-        res.status(200).json({ success: true, message: "Product successfully moved to wishlist.", cart: updatedCart.items.map(cart => cart.toObject({ getters: true })) })
+
+        res.status(200).json({
+            success: true,
+            message: "Product successfully moved to wishlist.",
+        })
     } catch (error) {
         next(error)
     }
@@ -197,5 +206,7 @@ const moveToWishlist = async (req, res, next) => {
 }
 
 
-module.exports = { addProductToCart, getAllCartItems, increaseQuantity,
-     decreaseQuantity, moveToWishlist, removeFromCart }
+module.exports = {
+    addProductToCart, getAllCartItems, increaseQuantity,
+    decreaseQuantity, moveToWishlist, removeFromCart
+}

@@ -30,9 +30,11 @@ const addOrRemoveFromWishlist = async (req, res, next) => {
         }
         await wishlist.save()
 
-        const updatedWishlist = await WishList.findOne({ userId }).populate("items.productId")
+        
 
-        res.status(200).json({ message: "Wishlist update successfully.", wishlist: updatedWishlist.items.map(wishlist => wishlist.toObject({ getters: true })) })
+        res.status(200).json({
+            message: "Wishlist update successfully.",
+        })
     } catch (error) {
         next(error)
     }
