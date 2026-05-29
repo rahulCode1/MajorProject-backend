@@ -6,7 +6,7 @@ A REST API for an e-commerce application where users can browse, add, and view p
 
 ## Demo Link
 
-[Live Demo](https://major-project-backend-nine.vercel.app/api/products)
+[Live API](https://luxlina-backend.vercel.app/api/products)
 
 ---
 
