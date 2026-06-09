@@ -14,8 +14,6 @@ const HttpError = require("./model/http-error");
 
 initializeDb();
 
-const cors = require("cors");
-
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
