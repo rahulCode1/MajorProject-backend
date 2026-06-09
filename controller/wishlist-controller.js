@@ -5,7 +5,7 @@ const HttpError = require("../model/http-error")
 
 const addOrRemoveFromWishlist = async (req, res, next) => {
 
-    const userId = req.params.id
+    const userId = req.userId 
 
 
     if (!userId) {
@@ -42,7 +42,7 @@ const addOrRemoveFromWishlist = async (req, res, next) => {
 
 
 const getAllWishlistItems = async (req, res, next) => {
-    const userId = req.params.id
+    const userId = req.userId
     if (!userId) {
         return next(new HttpError("Please provide user id.", 404))
     }
@@ -61,7 +61,7 @@ const getAllWishlistItems = async (req, res, next) => {
 
 
 const moveToCart = async (req, res, next) => {
-    const userId = req.params.id
+    const userId = req.userId
     if (!userId) {
         return next(new HttpError("Please provide both user  id.", 404))
     }

@@ -1,14 +1,21 @@
-const express = require("express")
-const { check } = require("express-validator")
-const router = express.Router()
-const { addOrRemoveFromWishlist, getAllWishlistItems, moveToCart } = require("../controller/wishlist-controller")
+const express = require("express");
+const { check } = require("express-validator");
+const router = express.Router();
+const {
+  addOrRemoveFromWishlist,
+  getAllWishlistItems,
+  moveToCart,
+} = require("../controller/wishlist-controller");
+const authCheck = require("../middleware/auth-check");
 const wishlistValidation = [
-    check("productId").trim().notEmpty().withMessage("Please provide product id to add to wishlist.")
-]
+  check("productId")
+    .trim()
+    .notEmpty()
+    .withMessage("Please provide product id to add to wishlist."),
+];
 
+router.post("/", authCheck, wishlistValidation, addOrRemoveFromWishlist);
+router.get("/", authCheck, getAllWishlistItems);
+router.patch("/", authCheck, wishlistValidation, moveToCart);
 
-router.post("/:id", wishlistValidation, addOrRemoveFromWishlist)
-router.get("/:id", getAllWishlistItems)
-router.patch("/:id", wishlistValidation, moveToCart)
-
-module.exports = router
+module.exports = router;
