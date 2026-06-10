@@ -142,7 +142,7 @@ const productValidation = [
 router.post(
   "/product/add",
   upload.array("images", 8),
-  productValidation,
+  // productValidation,
   authCheck,
   addNewProduct,
 );

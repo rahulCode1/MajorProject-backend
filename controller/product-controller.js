@@ -97,7 +97,7 @@ const addNewProduct = async (req, res, next) => {
 
 const getAllProducts = async (req, res, next) => {
   try {
-    const productsList = await Product.find();
+    const productsList = await Product.find().sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -123,13 +123,11 @@ const deleteProduct = async (req, res, next) => {
     const deletedProduct = await Product.findByIdAndDelete(productId);
 
     if (deleteProduct) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Product deleted successfully.",
-          deletedProduct,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Product deleted successfully.",
+        deletedProduct,
+      });
     } else {
       return next(new HttpError("No product found for delete.", 404));
     }
@@ -152,18 +150,16 @@ const productDetails = async (req, res, next) => {
     }).limit(5);
 
     if (productDetails) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: " Product details fetched successfully.",
-          data: {
-            product: productDetails.toObject({ getters: true }),
-            similarProducts: similarProducts.map((product) =>
-              product.toObject({ getters: true }),
-            ),
-          },
-        });
+      res.status(200).json({
+        success: true,
+        message: " Product details fetched successfully.",
+        data: {
+          product: productDetails.toObject({ getters: true }),
+          similarProducts: similarProducts.map((product) =>
+            product.toObject({ getters: true }),
+          ),
+        },
+      });
     } else {
       return next(new HttpError("No product found.", 404));
     }
