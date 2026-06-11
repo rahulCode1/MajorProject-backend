@@ -149,7 +149,7 @@ router.post(
 
 router.get("/products", getAllProducts);
 
-router.get("/product/:id", productDetails);
-router.delete("/product/:id", authCheck, deleteProduct);
+router.get("/product/:productId", productDetails);
+router.delete("/product/:productId", authCheck, deleteProduct);
 
 module.exports = router;

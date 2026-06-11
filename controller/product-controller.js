@@ -28,6 +28,8 @@ const addNewProduct = async (req, res, next) => {
     return next(new HttpError("No image uploaded.", 400));
   }
 
+  const userId = req.userId;
+
   const uploadedImages = [];
 
   try {
@@ -66,6 +68,7 @@ const addNewProduct = async (req, res, next) => {
       price,
       discountPrice,
       costPrice,
+      createdBy: userId,
       length,
       width,
       height,
@@ -114,30 +117,40 @@ const getAllProducts = async (req, res, next) => {
 };
 
 const deleteProduct = async (req, res, next) => {
-  const productId = req.params.id;
+  const productId = req.params.productId;
+  const userId = req.userId;
 
-  if (!productId) {
-    return next(new HttpError("Please provide product id.", 404));
-  }
   try {
-    const deletedProduct = await Product.findByIdAndDelete(productId);
+    const product = await Product.findById(productId);
 
-    if (deleteProduct) {
-      res.status(200).json({
-        success: true,
-        message: "Product deleted successfully.",
-        deletedProduct,
-      });
-    } else {
-      return next(new HttpError("No product found for delete.", 404));
+    if (!product) {
+      return next(new HttpError("Product not found.", 404));
     }
+
+
+    if (product.createdBy.toString() !== userId) {
+      return next(
+        new HttpError("You are not authorized to delete this product.", 403),
+      );
+    }
+
+    for (const image of product.images) {
+      await cloudinary.uploader.destroy(image.public_id);
+    }
+
+    await Product.findByIdAndDelete(productId);
+
+    res.status(200).json({
+      success: true,
+      message: "Product deleted successfully.",
+    });
   } catch (error) {
     next(error);
   }
 };
 
 const productDetails = async (req, res, next) => {
-  const productId = req.params.id;
+  const { productId } = req.params;
 
   if (!productId) {
     return next(new HttpError("Please provide product id.", 404));

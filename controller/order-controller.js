@@ -63,7 +63,7 @@ const findUserOrders = async (req, res, next) => {
 };
 
 const deleteOrder = async (req, res, next) => {
-  const orderId = req.params.id;
+  const { orderId } = req.params;
   if (!orderId) {
     return next(new HttpError("Please provide order id for place order.", 404));
   }

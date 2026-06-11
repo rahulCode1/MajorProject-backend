@@ -61,6 +61,7 @@ const login = async (req, res, next) => {
       token,
       name: existingUser.name,
       email: existingUser.email,
+      userId: existingUser._id
     });
   } catch (error) {
     next(error);

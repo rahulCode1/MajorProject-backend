@@ -14,8 +14,8 @@ const wishlistValidation = [
     .withMessage("Please provide product id to add to wishlist."),
 ];
 
-router.post("/", authCheck, wishlistValidation, addOrRemoveFromWishlist);
+router.post("/:productId", authCheck, wishlistValidation, addOrRemoveFromWishlist);
 router.get("/", authCheck, getAllWishlistItems);
-router.patch("/", authCheck, wishlistValidation, moveToCart);
+router.patch("/:productId", authCheck, wishlistValidation, moveToCart);
 
 module.exports = router;

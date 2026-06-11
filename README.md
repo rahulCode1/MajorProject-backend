@@ -243,6 +243,14 @@ Sample Response<br>
 {name, email}
 ```
 
+## **Guest login**
+
+```
+guest@gmail.com
+123456789
+```
+
+
 ## Contact
 
 For bugs or feature requests, please reach out to: rahulkumawat50555@gmail.com

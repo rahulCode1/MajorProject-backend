@@ -24,11 +24,11 @@ const productIdValidator = [
 
 router.post("/", cartValidator, authCheck, addProductToCart);
 router.get("/", authCheck, getAllCartItems);
-router.patch("/", productIdValidator, authCheck, increaseQuantity);
-router.patch("/decrease", productIdValidator, authCheck, decreaseQuantity);
-router.patch("/remove", productIdValidator, authCheck, removeFromCart);
+router.patch("/:productId/increase", productIdValidator, authCheck, increaseQuantity);
+router.patch("/:productId/decrease", productIdValidator, authCheck, decreaseQuantity);
+router.patch("/:productId/remove", productIdValidator, authCheck, removeFromCart);
 router.patch(
-  "/moveto_wishlist",
+  "/:productId/moveto_wishlist",
 
   productIdValidator,
   authCheck,

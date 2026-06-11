@@ -13,6 +13,8 @@ const addProductToCart = async (req, res, next) => {
   }
 
   const { productId, quantity } = req.body;
+
+  
   try {
     let cart = await Cart.findOne({ userId });
     // 2. If no cart, create new empty one
@@ -31,13 +33,11 @@ const addProductToCart = async (req, res, next) => {
       cart.items.push({ productId, quantity });
     }
     await cart.save();
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Product successfully added to cart.",
-        data: { cart: cart.toObject({ getters: true }) },
-      });
+    res.status(200).json({
+      success: true,
+      message: "Product successfully added to cart.",
+      data: { cart: cart.toObject({ getters: true }) },
+    });
   } catch (error) {
     next(error);
   }
@@ -78,7 +78,7 @@ const increaseQuantity = async (req, res, next) => {
       ),
     );
   }
-  const { productId } = req.body;
+  const { productId } = req.params;
   try {
     // Don't populate yet
     const cart = await Cart.findOne({
@@ -119,7 +119,7 @@ const decreaseQuantity = async (req, res, next) => {
     );
   }
 
-  const { productId } = req.body;
+  const { productId } = req.params;
   try {
     const cart = await Cart.findOne({
       userId: new mongoose.Types.ObjectId(userId),
@@ -164,7 +164,7 @@ const removeFromCart = async (req, res, next) => {
     );
   }
 
-  const { productId } = req.body;
+  const { productId } = req.params;
   try {
     const cart = await Cart.findOne({
       userId: new mongoose.Types.ObjectId(userId),
@@ -203,7 +203,7 @@ const moveToWishlist = async (req, res, next) => {
       ),
     );
   }
-  const { productId } = req.body;
+  const { productId } = req.params;
 
   try {
     const cart = await Cart.findOne({

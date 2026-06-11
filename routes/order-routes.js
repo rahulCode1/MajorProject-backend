@@ -56,6 +56,6 @@ const orderValidation = [
 
 router.post("/", orderValidation, authCheck, createOrder);
 router.get("/", authCheck, findUserOrders);
-router.delete("/:id", authCheck, deleteOrder);
+router.delete("/:orderId", authCheck, deleteOrder);
 
 module.exports = router;
