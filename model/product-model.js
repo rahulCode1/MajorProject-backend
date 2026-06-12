@@ -37,10 +37,11 @@ const productModel = new mongoose.Schema(
         "StatuesIdols",
         "HomeDecor",
         "KitchenDining",
-        "GardenOutdoor",
+        "Garden Outdoor",
         "CorporateGifts",
         "ReligiousItems",
-        "New Arrivals"
+        "New Arrivals",
+        "Marble Candles"
       ],
     },
     tags: { type: [String], required: true },

@@ -38,21 +38,20 @@ const addressSchema = new mongoose.Schema(
       trim: true,
     },
 
-
     isDefault: {
       type: Boolean,
-      default: false,
+      required: true,
     },
 
-
     userId: {
-      type: mongoose.Schema.Types.ObjectId, required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
       ref: "User",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Address = mongoose.model("Address", addressSchema);
 
-module.exports = Address 
+module.exports = Address;

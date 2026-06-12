@@ -14,6 +14,14 @@ const addNewAddress = async (req, res, next) => {
   const { name, phoneNumber, area, city, fullAddress, state, zipCode } =
     req.body;
 
+  const countAddress = await Address.countDocuments({ userId });
+  let isDefault = true;
+
+  if (countAddress >= 1) {
+    isDefault = false;
+  }
+
+
   try {
     const address = new Address({
       name,
@@ -24,9 +32,13 @@ const addNewAddress = async (req, res, next) => {
       state,
       zipCode,
       userId,
+      isDefault,
     });
 
     await address.save();
+
+   
+
     res.status(200).json({
       message: "New address added successfully.",
       address: address.toObject({ getters: true }),
@@ -68,6 +80,8 @@ const deleteAddress = async (req, res, next) => {
     if (!userAddress) {
       return next(new HttpError("Address not found with provided id.", 404));
     }
+
+    
 
     await userAddress.deleteOne();
     res
