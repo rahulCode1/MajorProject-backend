@@ -21,7 +21,6 @@ const addNewAddress = async (req, res, next) => {
     isDefault = false;
   }
 
-
   try {
     const address = new Address({
       name,
@@ -36,8 +35,6 @@ const addNewAddress = async (req, res, next) => {
     });
 
     await address.save();
-
-   
 
     res.status(200).json({
       message: "New address added successfully.",
@@ -81,7 +78,9 @@ const deleteAddress = async (req, res, next) => {
       return next(new HttpError("Address not found with provided id.", 404));
     }
 
-    
+    if (userAddress.isDefault) {
+      return next(new HttpError("Default address can not be deleted.", 403));
+    }
 
     await userAddress.deleteOne();
     res
